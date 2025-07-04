@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  database:                     # Service name for DB (used as hostname)
+    image: thunboo/custom_postgres:latest    # Points to custom_postgres/Dockerfile
+    ports:
+      - "5432:5432"             # Optional host exposure
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  webapp:                  # Service name for Python app
+    build: .                    # Points to py_app/Dockerfile
+    # environment:
+      # - DB_URL=
+    depends_on:
+      - database               # Waits for DB to start
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"            # Expose Python app port
+
+volumes:
+  pg_data:                     # Named volume for DB persistence
+
+networks:
+  app-network:                 # Dedicated network
