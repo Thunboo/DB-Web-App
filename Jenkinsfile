@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker/compose:latest'  // Official Docker Compose image
+            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Share host Docker socket
+        }
+    }
 
     environment {
         COMPOSE_PROJECT_NAME = "flask-app"
@@ -25,6 +30,12 @@ pipeline {
                 sh 'docker-compose down' // stop test containers
                 sh 'docker-compose up -d --build'
             }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker-compose down'
         }
     }
 }
