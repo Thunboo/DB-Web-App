@@ -6,15 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Docker Compose') {
-            steps {
-                sh '''
-                    curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-                    chmod +x /usr/local/bin/docker-compose
-                '''
-            }
-        }
-        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Thunboo/DB-Web-App.git'
