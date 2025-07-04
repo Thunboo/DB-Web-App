@@ -1,16 +1,20 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker/compose:latest'  // Official Docker Compose image
-            args '-v /var/run/docker.sock:/var/run/docker.sock'  // Share host Docker socket
-        }
-    }
+    agent any
 
     environment {
         COMPOSE_PROJECT_NAME = "flask-app"
     }
 
     stages {
+        stage('Install Docker Compose') {
+            steps {
+                sh '''
+                    curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                    chmod +x /usr/local/bin/docker-compose
+                '''
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/Thunboo/DB-Web-App.git'
