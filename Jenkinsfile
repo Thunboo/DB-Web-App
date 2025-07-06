@@ -8,29 +8,35 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Thunboo/DB-Web-App.git'
+                git branch: 'only-flask', url: 'https://github.com/Thunboo/DB-Web-App.git'
             }
         }
 
-        stage('Build & Test') {
+        stage('Build') {
             steps {
-                sh 'docker-compose up -d database'
-                sh 'docker-compose build webapp'
+                sh 'docker build -t flask-app .'
+                // sh 'docker-compose up -d database'
+                // sh 'docker-compose build webapp'
                 // sh 'docker-compose run webapp pytest'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker-compose down' // stop test containers
-                sh 'docker-compose up -d --build'
+                sh 'docker run -d -p 5000:5000 --name flask-app flask-app'
+                // sh 'docker-compose down' // stop test containers
+                // sh 'docker-compose up -d --build'
             }
         }
     }
 
     post {
         always {
-            sh 'docker-compose down'
+            sh 'docker stop flask-app'
+            echo 'Waiting for container to stop'
+            sleep(time: 10, unit: 'SECONDS')
+            sh 'docker rm flask-app'
+            // sh 'docker-compose down'
         }
     }
 }
