@@ -1,4 +1,4 @@
-import psycopg2
+# import psycopg2
 # from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session
 
@@ -10,7 +10,7 @@ params = {
     "debug": False
 }
 conn = None
-
+'''
 def get_db_connection():
     try:
         conn = psycopg2.connect(**session['db_config'])
@@ -58,11 +58,11 @@ def is_simple_query(sql_query):
         return False
         
     return not any(clause in normalized for clause in unsafe_clauses)
-
+'''
 @app.route('/')
 def index():
     return render_template('index.html')
-
+'''
 @app.route('/login')
 def about():
     return render_template('login.html')
@@ -227,6 +227,6 @@ def handle_form():
         return render_template('login.html',
                                error=f"Connection failed: {e}",
                                form_data=request.form)
-
+'''
 if __name__ == '__main__':
     app.run(debug=True)
