@@ -44,6 +44,8 @@ pipeline {
                 string(credentialsId: 'telegram-chat-id', variable: 'TELEGRAM_CHAT_ID')
             ]) {
                 sh ''' 
+                    set -x
+                    echo "using chat id : [${TELEGRAM_CHAT_ID}]"
                     curl -X POST -H 'Content-type: application/json' \
                     --data '{"chat_id": "${TELEGRAM_CHAT_ID}", \
                     "text": "Thunboo has built an app."}' \
