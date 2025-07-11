@@ -38,5 +38,18 @@ pipeline {
             sh 'docker rm flask-app'
             // sh 'docker-compose down'
         }
+        success {
+            withCredentials([
+                string(credentialsId: 'telegram-bot-token', variable: 'TELEGRAM_BOT_TOKEN'),
+                string(credentialsId: 'telegram-chat-id', variable: 'TELEGRAM_CHAT_ID')
+            ]) {
+                sh ''' 
+                    curl -X POST -H 'Content-type: application/json' \
+                    --data '{"chat_id": "${TELEGRAM_CHAT_ID}", \
+                    "text": "Thunboo has built an app."}' \
+                    https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+                '''
+            }
+        }
     }
 }
