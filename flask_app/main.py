@@ -163,8 +163,7 @@ def execute_query():
 
 @app.route('/list-tables', methods=['POST'])
 def list_tables():
-    tables = get_tables_list()
-    return render_template('db_management.html', tables=tables)
+    return render_template('db_management.html', tables=get_tables_list())
 
 @app.route('/show-table-data', methods=['POST'])
 def show_table_data():
