@@ -46,9 +46,7 @@ pipeline {
                 sh ''' 
                     set -x
                     echo "using chat id : [${TELEGRAM_CHAT_ID}]"
-                    curl -X POST -H 'Content-type: application/json' \
-                    --data '{"chat_id": "${TELEGRAM_CHAT_ID}", "text": "Thunboo has built an app."}' \
-                    https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
+                    curl -X POST -H 'Content-type: application/json' --data '{"chat_id": "${TELEGRAM_CHAT_ID}", "text": "Thunboo has built an app."}' https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage
                 '''
             }
         }
